@@ -9,6 +9,7 @@ import NavbarComponent from './NavbarComponent';
 import Signup from './Signup';
 import { UserContext } from './UserContext';
 import UserDashboard from './UserDashboard';
+import UserRideStatus from './UserRideStatus';
 
 function App() {
 
@@ -36,7 +37,8 @@ function App() {
               <Route path="/login" element={ <Login setLoggedIn={setLoggedIn}/> } />
               <Route path="/signup" element={ <Signup /> } />
               <Route exact path="/admin" element={ <AdminDashboard /> } />
-              <Route path="/user" element= {<UserDashboard />} />
+              <Route exact path="/user" element= {<UserDashboard />} />
+              <Route path="/user/ride/:username" element= {<UserRideStatus />} />
               <Route exact path="/admin/avstatus" element= {<AvStatuses />} />
               <Route path="/admin/avstatus/:id" element={<AvStatus />} />
             </Routes>

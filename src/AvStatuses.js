@@ -101,13 +101,16 @@ const AvStatuses = () => {
         <div className="av">
             <Container className="py-3">
                 <Row className="pb-3">
-                    <h2>AV Statuses</h2>
+                    <h2>All Registered Vehicles</h2>
                 </Row>
                 <Row>
                     <h3>AV Statistics</h3>
                     <p>{active} of {total} vehicles are active</p>
                     <p>{inactive} of {total} vehicles are inactive</p>
                     <p>{connected} of {total} vehicles are connected</p>
+                </Row>
+                <Row className="py-3">
+                    <h3>Registered Vehicles</h3>
                 </Row>
                 <div style={{ height: 400, width: '100%' }}>
                     {vehicles && <DataGrid

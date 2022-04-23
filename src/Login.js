@@ -46,6 +46,7 @@ const Login = ({setLoggedIn}) => {
                     setUser(data.userName);
                     
                     localStorage.setItem('user', true);
+                    localStorage.setItem('username', data.userName);
                     localStorage.setItem('admin', data.isAdmin);
                     setLoggedIn(true);
                     navigate(navigate_url);
