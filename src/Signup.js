@@ -3,31 +3,88 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { UserContext } from "./UserContext";
+import { Badge } from "react-bootstrap";
 
 
-const Signup = () => {
+const Signup = ({setLoggedIn}) => {
+    const navigate = useNavigate();
+    const [signupFailed, setSignupFailed] = useState(false)
+
+    const {user, setUser} = useContext(UserContext);
+
+    const [signupError, setSignupError] = useState(null);
+    const invalidUsername = () => {
+        if(signupFailed){
+            return (<Badge className="mt-3" bg='danger'>{signupError}</Badge>);
+        }
+        return;
+    }
+
     const handleSubmit = (e) => {
         
         e.preventDefault();
         const email = e.target.email.value;
         const username = e.target.username.value;
         const password =  e.target.password.value;
+        const isAdmin = e.target.isAdmin.checked;
         
-        const data = {email: email, userName:username, userPassword:password};
+
+        const data = {userEmail: email, userName:username, userPassword:password};
         
-        console.log(JSON.stringify(data));
-     
+
+        const url = isAdmin ? "/admin/signup" : "/user/signup"
+
+        
+        fetch('http://localhost:8000' + url, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+        .then((res) => res.json())
+        .then((data) => {
+              
+            if(data.status === 200){
+                console.log("Signup Successful: " + data.userName);
+                const navigate_url = isAdmin ? "/admin" : "/user";
+
+
+                setUser(data.userName);
+                localStorage.setItem('user', true);
+                localStorage.setItem('username', data.userName);
+                
+                localStorage.setItem('admin', isAdmin ? "1" : "0");
+                
+                setLoggedIn(true);
+                navigate(navigate_url);
+            }
+            else{
+                setSignupFailed(true);
+                setSignupError(data.message);
+                console.log("Signup Failed: " + data.message);
+            }
+        })
+        .catch((err)=>{
+            console.log("ERROR: "+err.message);
+        })
     }
 
     return ( 
         <div className="signup">
             
-            <Container>
-            <Row className="py-3">
-                <Col><h2>Signup</h2></Col>
-            </Row>
-            <Row md="auto">
-                <Col>
+            <Container fluid>
+            <Row>
+                <Col md="6" className="bg-dark d-none d-lg-block" style={{"height": "100vh"}}>
+                    <h2 style={{color:"white", 
+                                textAlign:"center", 
+                                justifyContent:"center",
+                                flex: 1,
+                                lineHeight: "100px"}}>Welcome to AV Cloud</h2>
+                </Col>
+                <Col md="4" className="m-3">
+                    <h2>Signup</h2>
                     <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email</Form.Label>
@@ -43,17 +100,20 @@ const Signup = () => {
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" name="password" placeholder="Password" />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
+                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                        <Form.Check type="checkbox" label="Admin Signup" name="isAdmin"/>
+                    </Form.Group>
+                    <Button variant="primary" type="submit" className="px-5">
                         Signup
                     </Button>
                     </Form>
-            </Col>
-            </Row>
-            <Row className="pt-2">
-                <Col>
-                {/*invalidCombination()*/}
+                    {invalidUsername()}
+                    <Row className="mt-5">
+                    <p>Already have an account?</p><Link to="/login">Login here</Link>
+                    </Row>
+                
                 </Col>
-            </Row>
+        </Row>
         </Container>
         </div>
      );

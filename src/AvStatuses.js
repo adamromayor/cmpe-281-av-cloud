@@ -1,4 +1,4 @@
-import { Badge, Container, Row } from "react-bootstrap";
+import { Badge, Card, Container, Row } from "react-bootstrap";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +42,7 @@ const AvStatuses = () => {
                     { params.value === "active" && <Badge bg="primary">{params.value}</Badge>}
                     { params.value === "connected" && <Badge bg="success">{params.value}</Badge>}
                     { params.value === "inactive" && <Badge bg="danger">{params.value}</Badge>}
+                    { params.value === "deregistered" && <Badge bg="secondary">{params.value}</Badge>}
                 </div>
                 
             ),
@@ -82,7 +83,7 @@ const AvStatuses = () => {
             width: 160,
             renderCell: (params: GridRenderCellParams<String>) => (
                 <Button
-                  variant="primary"
+                  variant="info"
                   size="small"
                   onClick={()=>{
                       navigate(params.value);
@@ -103,16 +104,20 @@ const AvStatuses = () => {
                 <Row className="pb-3">
                     <h2>All Registered Vehicles</h2>
                 </Row>
-                <Row>
-                    <h3>AV Statistics</h3>
-                    <p>{active} of {total} vehicles are active</p>
-                    <p>{inactive} of {total} vehicles are inactive</p>
-                    <p>{connected} of {total} vehicles are connected</p>
-                </Row>
+                
+                <Card className="my-3" style={{width: '25rem'}}>
+                    <Card.Header>AV Statistics</Card.Header>    
+                    <Card.Body>
+                        <Card.Text>{active} of {total} vehicles are active</Card.Text>
+                        <Card.Text>{inactive} of {total} vehicles are inactive</Card.Text>
+                        <Card.Text>{connected} of {total} vehicles are connected</Card.Text>
+                    </Card.Body>
+                </Card>
+                
                 <Row className="py-3">
                     <h3>Registered Vehicles</h3>
                 </Row>
-                <div style={{ height: 400, width: '100%' }}>
+                <div style={{ height: 600, width: '100%' }}>
                     {vehicles && <DataGrid
                         rows={vehicles}
                         columns={columns}

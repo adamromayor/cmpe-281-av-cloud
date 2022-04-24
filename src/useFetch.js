@@ -7,6 +7,7 @@ const useFetch = (url) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    //console.log("HERERHERERE")
       fetch(url)
       .then(res => {
         if (!res.ok) { // error coming back from server

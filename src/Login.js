@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form"
 import { Container, Row, Col, Badge } from "react-bootstrap";
 import useFetch from "./useFetch";
@@ -16,7 +16,7 @@ const Login = ({setLoggedIn}) => {
 
     const invalidCombination = () => {
         if(loginFailed){
-            return (<Badge bg='danger'>Invalid Username or Password</Badge>);
+            return (<Badge className="mt-3" bg='danger'>Invalid Username or Password</Badge>);
         }
         return
     }
@@ -38,7 +38,7 @@ const Login = ({setLoggedIn}) => {
             .then((res) => res.json())
             .then((data) => {
                   
-                if(data.status === 200){
+                if(username !== "" && data.status === 200){
                     console.log("Login Successful: " + data.userName);
                     const navigate_url = data.isAdmin ? "/admin" : "/user";
 
@@ -67,31 +67,42 @@ const Login = ({setLoggedIn}) => {
     return ( 
         <div className="login">
         
-        <Container>
-            <Row className="py-3">
-                <Col><h2>Login Page</h2></Col>
-            </Row>
-            <Row md="auto">
-                <Col>
-                    <Form onSubmit={handleLogin}>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control type="text" name="username" placeholder="Enter Username" />
-                    </Form.Group>
+        <Container fluid>
+            <Row >
+                <Col md="6" className="bg-dark d-none d-lg-block" style={{"height": "100vh"}}>
+                    <h2 style={{color:"white", 
+                                textAlign:"center", 
+                                justifyContent:"center",
+                                flex: 1,
+                                lineHeight: "100px"}}>Welcome to AV Cloud</h2>
+                </Col>
+                <Col md="4" className="m-3">
+                    <Row>
+                        <h2>Login Page</h2>
+                    </Row>
+                    <Row >
+                        <Form onSubmit={handleLogin}>
+                        <Form.Group className="mb-3" controlId="formBasicUsername">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="text" name="username" placeholder="Enter Username" />
+                        </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" name="password" placeholder="Password" />
-                    </Form.Group>
-                    <Button variant="primary" type="submit">
-                        Login
-                    </Button>
-                    </Form>
-            </Col>
-            </Row>
-            <Row className="pt-2">
-                <Col>
-                {invalidCombination()}
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" name="password" placeholder="Password" />
+                        </Form.Group>
+                        <Button variant="primary" type="submit" className="px-5">
+                            Login
+                        </Button>
+                    
+                        </Form>
+                    </Row>
+                    <Row md="auto">
+                    {invalidCombination()}
+                    </Row>
+                <Row className="mt-5">
+                    <p>Don't have an account?</p><Link to="/signup">Signup here</Link>
+                </Row>
                 </Col>
             </Row>
         </Container>
