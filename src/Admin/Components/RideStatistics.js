@@ -2,6 +2,7 @@ import useFetch from "../../CustomHooks/useFetch";
 import { DataGrid } from "@mui/x-data-grid";
 import { Container } from "react-bootstrap";
 import { useEffect } from "react";
+import DataGridWrapper from "../../Components/DataGridWrapper";
 
 const RideStatistics = ({av_id}) => {
 
@@ -58,16 +59,9 @@ const RideStatistics = ({av_id}) => {
         <Container className="py-3">
             <h2>Ride Statistics</h2>
             {!error && rides && <p>{rides.length} total trips provided.</p>}
-            <div style={{ height: 400, width: '100%' }}>
-                    {!isPending && !error && rides && <DataGrid
-                        rows={rides}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        //checkboxSelection
-                        disableSelectionOnClick
-                    />}
-                </div>
+            {!error && !isPending && rides &&
+                <DataGridWrapper rows={rides} columns={columns} />
+            }
         </Container>
     );
 }

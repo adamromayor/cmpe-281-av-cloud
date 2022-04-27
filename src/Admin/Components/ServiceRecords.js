@@ -1,6 +1,7 @@
 import useFetch from "../../CustomHooks/useFetch";
 import { DataGrid } from "@mui/x-data-grid";
 import { Container } from "react-bootstrap";
+import DataGridWrapper from "../../Components/DataGridWrapper";
 
 const ServiceRecords = ({av_id}) => {
     const {data:records, isPending, error} = useFetch("http://localhost:5050/serviceRecords?av_id="+av_id);
@@ -46,16 +47,10 @@ const ServiceRecords = ({av_id}) => {
             <h2>Service Records</h2>
             {isPending && <p>Loading...</p>}
             {!error && records && <p>{records.length} total service records.</p>}
-            <div style={{ height: 400, width: '100%' }}>
-                    {!error && records && <DataGrid
-                        rows={records}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        //checkboxSelection
-                        disableSelectionOnClick
-                    />}
-                </div>
+            
+            {!error && !isPending && records &&
+                <DataGridWrapper rows={records} columns={columns} />
+            }
         </Container>
     );
 }

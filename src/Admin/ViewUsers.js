@@ -1,5 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Container, Row } from "react-bootstrap";
+import DataGridWrapper from "../Components/DataGridWrapper";
 import useFetch from "../CustomHooks/useFetch";
 
 
@@ -39,6 +40,10 @@ const ViewUsers = () => {
             <h2>User Details</h2>
             </Row>
             <Row>
+
+            {/**
+             * Can't Use DataGridWrapper Because getRowId is used
+             */}
             <div style={{ height: 600, width: '100%' }}>
                 {!isPending && !error && users && <DataGrid
                     rows={users.users[0]}
