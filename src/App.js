@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import AdminDashboard from './AdminDashboard';
-import AvStatus from './AvStatus';
-import AvStatuses from './AvStatuses';
-import Home from './Home'
-import Login from './Login';
-import NavbarComponent from './NavbarComponent';
-import RegisterAv from './RegisterAv';
-import Signup from './Signup';
-import { UserContext } from './UserContext';
-import UserDashboard from './UserDashboard';
-import UserRideStatus from './UserRideStatus';
-import ViewUsers from './ViewUsers';
+import AdminDashboard from './Admin/AdminDashboard';
+import AvStatus from './Admin/AvStatus';
+import AvStatuses from './Admin/AvStatuses';
+import Home from './Home/Home'
+import Login from './Login/Login';
+import NavbarComponent from './Components/NavbarComponent';
+import RegisterAv from './Admin/RegisterAv';
+import Signup from './Signup/Signup';
+import { UserContext } from './CustomHooks/UserContext';
+import UserDashboard from './User/UserDashboard';
+import UserRideStatus from './User/UserRideStatus';
+import ViewUsers from './Admin/ViewUsers';
 
 function App() {
 

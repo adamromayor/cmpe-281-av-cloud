@@ -1,17 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+//import { useContext, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form"
 import { Container, Row, Col, Badge } from "react-bootstrap";
-import useFetch from "./useFetch";
-import { UserContext } from "./UserContext";
+//import { UserContext } from "../CustomHooks/UserContext";
 
 
 const Login = ({setLoggedIn}) => {
     
     const navigate = useNavigate();
 
-    const {user, setUser} = useContext(UserContext);
+    //const {user, setUser} = useContext(UserContext);
     const [loginFailed, setLoginFailed] = useState(false)
 
     const invalidCombination = () => {
@@ -43,7 +43,7 @@ const Login = ({setLoggedIn}) => {
                     const navigate_url = data.isAdmin ? "/admin" : "/user";
 
 
-                    setUser(data.userName);
+                    //setUser(data.userName);
                     
                     localStorage.setItem('user', true);
                     localStorage.setItem('username', data.userName);

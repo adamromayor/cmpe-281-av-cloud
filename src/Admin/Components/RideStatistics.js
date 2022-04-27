@@ -1,4 +1,4 @@
-import useFetch from "./useFetch";
+import useFetch from "../../CustomHooks/useFetch";
 import { DataGrid } from "@mui/x-data-grid";
 import { Container } from "react-bootstrap";
 import { useEffect } from "react";
@@ -57,9 +57,9 @@ const RideStatistics = ({av_id}) => {
     return (  
         <Container className="py-3">
             <h2>Ride Statistics</h2>
-            {rides && <p>{rides.length} total trips provided.</p>}
+            {!error && rides && <p>{rides.length} total trips provided.</p>}
             <div style={{ height: 400, width: '100%' }}>
-                    {rides && <DataGrid
+                    {!isPending && !error && rides && <DataGrid
                         rows={rides}
                         columns={columns}
                         pageSize={10}

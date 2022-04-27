@@ -1,13 +1,10 @@
-import useFetch from "./useFetch";
+import useFetch from "../../CustomHooks/useFetch";
 import { DataGrid } from "@mui/x-data-grid";
 import { Container } from "react-bootstrap";
-import { useEffect } from "react";
 
 const ServiceRecords = ({av_id}) => {
     const {data:records, isPending, error} = useFetch("http://localhost:5050/serviceRecords?av_id="+av_id);
     
-
-
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 100 },
         {
@@ -47,9 +44,10 @@ const ServiceRecords = ({av_id}) => {
     return (  
         <Container className="py-3">
             <h2>Service Records</h2>
-            {records && <p>{records.length} total service records.</p>}
+            {isPending && <p>Loading...</p>}
+            {!error && records && <p>{records.length} total service records.</p>}
             <div style={{ height: 400, width: '100%' }}>
-                    {records && <DataGrid
+                    {!error && records && <DataGrid
                         rows={records}
                         columns={columns}
                         pageSize={10}

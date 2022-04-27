@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import {Badge, Button, Col, Container, Form, Row} from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import useFetch from "./useFetch";
+import useFetch from "../CustomHooks/useFetch";
 
-const RegisterAv = () => {
-
-    const navigate = useNavigate();
-    
+const RegisterAv = () => {   
     const {data:vehicles, isPending, error} = useFetch("http://localhost:5050/vehicles");
     const [nextID, setID] = useState();
     const [success, setSuccess] = useState(null);
@@ -25,7 +21,7 @@ const RegisterAv = () => {
             const lastID = tmpArray[tmpArray.length - 1];
             const id = "av-id-" + (parseInt(lastID.split("-")[2]) + 1)
             setID(id);
-            console.log(nextID);
+            console.log(id);
         }
     }, [vehicles])
 
@@ -39,11 +35,11 @@ const RegisterAv = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        const make = e.target.make.value;
-        const model = e.target.model.value;
-        const year =  e.target.year.value;
-        const license = e.target.license.value;
-        const status = "connected";
+        //const make = e.target.make.value;
+        //const model = e.target.model.value;
+        //const year =  e.target.year.value;
+        //const license = e.target.license.value;
+        //const status = "connected";
         
 
         const av = {

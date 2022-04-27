@@ -1,7 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
-import useFetch from "./useFetch";
+import useFetch from "../CustomHooks/useFetch";
 
 
 const ViewUsers = () => {
@@ -41,15 +40,15 @@ const ViewUsers = () => {
             </Row>
             <Row>
             <div style={{ height: 600, width: '100%' }}>
-                    {users && <DataGrid
-                        rows={users.users[0]}
-                        columns={columns}
-                        pageSize={10}
-                        getRowId={(row)=> row.userName}
-                        rowsPerPageOptions={[10]}
-                        //checkboxSelection
-                        disableSelectionOnClick
-                    />}
+                {!isPending && !error && users && <DataGrid
+                    rows={users.users[0]}
+                    pageSize={10}
+                    getRowId={(row)=> row.userName}
+                    columns={columns}
+                    rowsPerPageOptions={[10]}
+                    //checkboxSelection
+                    disableSelectionOnClick
+                />}
             </div>
             </Row>
         </Container>

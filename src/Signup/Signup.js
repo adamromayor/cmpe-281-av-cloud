@@ -4,8 +4,9 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
-import { UserContext } from "./UserContext";
+import { useState } from "react";
+//import { useContext, useState } from "react";
+//import { UserContext } from "../CustomHooks/UserContext";
 import { Badge } from "react-bootstrap";
 
 
@@ -13,7 +14,7 @@ const Signup = ({setLoggedIn}) => {
     const navigate = useNavigate();
     const [signupFailed, setSignupFailed] = useState(false)
 
-    const {user, setUser} = useContext(UserContext);
+    //const {user, setUser} = useContext(UserContext);
 
     const [signupError, setSignupError] = useState(null);
     const invalidUsername = () => {
@@ -51,7 +52,7 @@ const Signup = ({setLoggedIn}) => {
                 const navigate_url = isAdmin ? "/admin" : "/user";
 
 
-                setUser(data.userName);
+                //setUser(data.userName);
                 localStorage.setItem('user', true);
                 localStorage.setItem('username', data.userName);
                 

@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import MapContainer from "./MapContainer";
-import useFetch from "./useFetch";
-import { UserContext } from "./UserContext";
+import MapContainer from "../Components/MapContainer";
+import useFetch from "../CustomHooks/useFetch";
+
 
 const UserRideStatus = () => {
     
@@ -85,7 +85,8 @@ const UserRideStatus = () => {
 
                     </Card.Body>
                     
-                    </Card>}
+                    </Card>
+            }
             </Col>
         </Row>
         <Row className="mt-5">

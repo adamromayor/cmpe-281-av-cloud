@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useFetch from "./useFetch";
+import useFetch from "../CustomHooks/useFetch";
 
 const AvStatuses = () => {
 
@@ -13,6 +13,7 @@ const AvStatuses = () => {
     const [active, setActive] = useState(0);
     const [inactive, setInactive] = useState(0);
     const [connected, setConnected] = useState(0);
+    const [deregistered, setDeregistered] = useState(0);
     const [total, setTotal] = useState(0);
 
 
@@ -27,6 +28,7 @@ const AvStatuses = () => {
         setActive(vehicles.filter((vehicle) => { return vehicle.serviceState==='active'}).length);
         setInactive(vehicles.filter((vehicle) => { return vehicle.serviceState==='inactive'}).length);
         setConnected(vehicles.filter((vehicle) => { return vehicle.serviceState==='connected'}).length);
+        setDeregistered(vehicles.filter((vehicle) => { return vehicle.serviceState==='deregistered'}).length);
         setTotal(vehicles.length);
         }
     }, [vehicles]);
@@ -112,6 +114,9 @@ const AvStatuses = () => {
                         <Card.Text>{inactive} of {total} vehicles are inactive</Card.Text>
                         <Card.Text>{connected} of {total} vehicles are connected</Card.Text>
                     </Card.Body>
+                    <Card.Footer>
+                        <Card.Text>{deregistered} of {total} vehicles are deregistered</Card.Text>
+                    </Card.Footer>
                 </Card>
                 
                 <Row className="py-3">

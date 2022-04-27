@@ -1,10 +1,10 @@
 {
   "vehicles": [
     {
-      "serviceState": "inactive",
-      "movingState": "idle",
+      "serviceState": "deregistered",
+      "movingState": "",
       "username": "",
-      "location": "37.3306449234894&-121.87785311867732",
+      "location": "",
       "id": "av-id-0004"
     },
     {
@@ -22,11 +22,11 @@
       "location": "37.335575350752045&-121.87694394154319"
     },
     {
-      "id": "av-id-0015",
-      "serviceState": "inactive",
-      "movingState": "forward",
+      "serviceState": "deregistered",
+      "movingState": "",
       "username": "",
-      "location": "37.322512564582574&-121.88195539729738"
+      "location": "",
+      "id": "av-id-0015"
     },
     {
       "id": "av-id-0529",

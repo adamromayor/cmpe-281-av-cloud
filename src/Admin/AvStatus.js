@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container"
 import { useEffect, useState } from "react";
-import useFetch from "./useFetch";
+import useFetch from "../CustomHooks/useFetch";
 import { Card, Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import RideStatistics from "./RideStatistics";
-import ServiceRecords from "./ServiceRecords";
-import MapContainer from "./MapContainer";
+import RideStatistics from "./Components/RideStatistics";
+import ServiceRecords from "./Components/ServiceRecords";
+import MapContainer from "../Components/MapContainer";
 
 const AvStatus = () => {
     const {id} = useParams();
@@ -35,7 +35,7 @@ const AvStatus = () => {
                 console.log(lat + " " + lng)
             }
         }
-    }, [vehicles])
+    }, [vehicles, id])
 
     const putState = (newState) =>{
         const data = [{
@@ -63,7 +63,7 @@ const AvStatus = () => {
     }
     const changeState = () =>{
 
-        if(av && av[0].serviceState === "connected"){
+        if(!error && av && av[0].serviceState === "connected"){
             return (
                 <Card.Footer className="text-center">
                     <Button variant="secondary" onClick={()=>{putState("inactive")}}>
@@ -75,7 +75,7 @@ const AvStatus = () => {
                 </Card.Footer>
                 );    
         } 
-        else if(av && av[0].serviceState === "inactive"){
+        else if(!error && av && av[0].serviceState === "inactive"){
             return (
                 <Card.Footer className="text-center">
                     <Button variant="success" onClick={()=> {putState("connected")}}>
@@ -94,7 +94,7 @@ const AvStatus = () => {
     <div>
         <Container className="py-3">
             <h2>Status and Statistics of {id}</h2>
-           {!isPending && av && <Card className="my-3" style={{width: '25rem'}}>
+           {!isPending && !error && av && <Card className="my-3" style={{width: '25rem'}}>
             <Card.Header>{id}</Card.Header>
                 <Card.Body >
                     { av[0].serviceState === "active" && 
@@ -124,7 +124,7 @@ const AvStatus = () => {
             <Row>
             <ServiceRecords av_id={id} />
             </Row>
-            {av && av[0].serviceState !== "deregistered" && 
+            {!isPending && !error && av && av[0].serviceState !== "deregistered" && 
             <Row className="mt-5">
             <h2>Vehicle Location</h2>
             <Col className="mt-3">
