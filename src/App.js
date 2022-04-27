@@ -11,7 +11,7 @@ import Signup from './Signup/Signup';
 import { UserContext } from './CustomHooks/UserContext';
 import UserDashboard from './User/UserDashboard';
 import UserRideStatus from './User/UserRideStatus';
-import ViewUsers from './Admin/ViewUsers';
+import UserDetails from './Admin/UserDetails';
 
 function App() {
 
@@ -43,7 +43,7 @@ function App() {
               <Route path="/user/ride/:username" element= {<UserRideStatus />} />
               <Route exact path="/admin/avstatus" element= {<AvStatuses />} />
               <Route exact path="/admin/avstatus/:id" element={<AvStatus />} />
-              <Route exact path="/admin/users" element={<ViewUsers />} />
+              <Route exact path="/admin/users" element={<UserDetails />} />
               <Route exact path="/admin/register" element={<RegisterAv />} />
             </Routes>
           </div>

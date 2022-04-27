@@ -1,5 +1,4 @@
 import useFetch from "../../CustomHooks/useFetch";
-import { DataGrid } from "@mui/x-data-grid";
 import { Container } from "react-bootstrap";
 import DataGridWrapper from "../../Components/DataGridWrapper";
 
@@ -29,7 +28,6 @@ const ServiceRecords = ({av_id}) => {
           description: 'This column has a value getter and is not sortable.',
           sortable: true,
           width: 160,
-          
         },
         {
             field: 'technician',
@@ -37,7 +35,6 @@ const ServiceRecords = ({av_id}) => {
             description: 'This column has a value getter and is not sortable.',
             sortable: true,
             width: 160,
-            
           },
       ];
 

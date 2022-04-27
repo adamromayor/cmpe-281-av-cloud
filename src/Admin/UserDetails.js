@@ -1,10 +1,9 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Container, Row } from "react-bootstrap";
-import DataGridWrapper from "../Components/DataGridWrapper";
 import useFetch from "../CustomHooks/useFetch";
 
 
-const ViewUsers = () => {
+const UserDetails = () => {
 
     const url = "http://localhost:8000/admin/admin/userlist"
     const {data:users, isPending, error} = useFetch(url);
@@ -16,21 +15,18 @@ const ViewUsers = () => {
             headerName: 'Email',
             width: 200,
             editable: false,
-          
         },
         {
             field: 'userName',
             headerName: 'Username',
             width: 200,
-            editable: false,
-          
+            editable: false,  
         },
         {
             field: 'isAdmin',
             headerName: 'Administrator',
             width: 150,
             editable: false,
-            
         },
       ];
 
@@ -40,10 +36,7 @@ const ViewUsers = () => {
             <h2>User Details</h2>
             </Row>
             <Row>
-
-            {/**
-             * Can't Use DataGridWrapper Because getRowId is used
-             */}
+            {/*Can't Use DataGridWrapper Because getRowId is used*/}
             <div style={{ height: 600, width: '100%' }}>
                 {!isPending && !error && users && <DataGrid
                     rows={users.users[0]}
@@ -60,4 +53,4 @@ const ViewUsers = () => {
     </div> );
 }
  
-export default ViewUsers;
+export default UserDetails;
