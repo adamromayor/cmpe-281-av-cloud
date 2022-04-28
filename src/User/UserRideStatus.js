@@ -8,10 +8,10 @@ import useFetch from "../CustomHooks/useFetch";
 const UserRideStatus = () => {
     
     const { username } = useParams();
-    const url = "http://localhost:5050/rideTable?ride_status=in-progress&username=" + username
+    const url = "/rideTable?ride_status=in-progress&username=" + username
     const {data:ride, isPending, error} = useFetch(url);
     
-    const avUrl = "http://localhost:5050/vehicles?username=" + username;
+    const avUrl = "/vehicles?username=" + username;
     const {data:av, avIsPending, averror} = useFetch(avUrl);
 
     const [activeRide, setRide] = useState(null);

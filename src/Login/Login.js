@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form"
 import { Container, Row, Col, Badge } from "react-bootstrap";
+import FullColumnComponent from "../Components/FullColumnComponent";
 //import { UserContext } from "../CustomHooks/UserContext";
 
 
@@ -30,7 +31,7 @@ const Login = ({setLoggedIn}) => {
         
         
         const login = (data) => {
-            fetch('http://localhost:8000/user/login', {
+            fetch('/user/login', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
@@ -40,16 +41,17 @@ const Login = ({setLoggedIn}) => {
                   
                 if(username !== "" && data.status === 200){
                     console.log("Login Successful: " + data.userName);
-                    const navigate_url = data.isAdmin ? "/admin" : "/user";
+                    const navigate_url = data.isAdmin==="Yes" ? "/administrator" : "/" + data.userName;
 
 
                     //setUser(data.userName);
                     
                     localStorage.setItem('user', true);
                     localStorage.setItem('username', data.userName);
-                    localStorage.setItem('admin', data.isAdmin);
+                    localStorage.setItem('admin', data.isAdmin === "Yes" ? "1" : "0");
                     setLoggedIn(true);
                     navigate(navigate_url);
+                    console.log("ADMIN: "+data.isAdmin);
                 }
                 else{
                     setLoginFailed(true);
@@ -69,13 +71,7 @@ const Login = ({setLoggedIn}) => {
         
         <Container fluid>
             <Row >
-                <Col md="6" className="bg-dark d-none d-lg-block" style={{"height": "100vh"}}>
-                    <h2 style={{color:"white", 
-                                textAlign:"center", 
-                                justifyContent:"center",
-                                flex: 1,
-                                lineHeight: "100px"}}>Welcome to AV Cloud</h2>
-                </Col>
+                <FullColumnComponent title="Welcome to AV Cloud" />
                 <Col md="4" className="m-3">
                     <Row>
                         <h2>Login Page</h2>

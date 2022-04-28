@@ -706,6 +706,62 @@
       "movingState": "stopped",
       "location": "pending",
       "username": ""
+    },
+    {
+      "id": "av-id-1001",
+      "serviceState": "connected",
+      "movingState": "stopped",
+      "location": "pending",
+      "username": ""
+    },
+    {
+      "id": "av-id-1002",
+      "serviceState": "connected",
+      "movingState": "stopped",
+      "location": "pending",
+      "username": ""
+    },
+    {
+      "id": "av-id-1003",
+      "serviceState": "connected",
+      "movingState": "stopped",
+      "location": "pending",
+      "username": ""
+    },
+    {
+      "id": "av-id-1004",
+      "serviceState": "connected",
+      "movingState": "stopped",
+      "location": "pending",
+      "username": ""
+    },
+    {
+      "id": "av-id-1005",
+      "serviceState": "connected",
+      "movingState": "stopped",
+      "location": "pending",
+      "username": ""
+    },
+    {
+      "id": "av-id-1006",
+      "serviceState": "connected",
+      "movingState": "stopped",
+      "location": "pending",
+      "username": ""
+    },
+    {
+      "id": "av-id-1007",
+      "serviceState": "connected",
+      "movingState": "stopped",
+      "location": "pending",
+      "username": ""
+    },
+    {
+      "id": "av-id-1008",
+      "serviceState": "connected",
+      "movingState": "stopped",
+      "location": "pending",
+      "username": ""
     }
   ],
   "rides": [

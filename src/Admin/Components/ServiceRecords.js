@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import DataGridWrapper from "../../Components/DataGridWrapper";
 
 const ServiceRecords = ({av_id}) => {
-    const {data:records, isPending, error} = useFetch("http://localhost:5050/serviceRecords?av_id="+av_id);
+    const {data:records, isPending, error} = useFetch("/serviceRecords?av_id="+av_id);
     
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 100 },

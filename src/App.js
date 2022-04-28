@@ -12,6 +12,7 @@ import { UserContext } from './CustomHooks/UserContext';
 import UserDashboard from './User/UserDashboard';
 import UserRideStatus from './User/UserRideStatus';
 import UserDetails from './Admin/UserDetails';
+import UserProfile from './User/UserProfile';
 
 function App() {
 
@@ -25,28 +26,41 @@ function App() {
       setLoggedIn(localStorage.getItem('user'));
   }, [loggedIn]);
 
-
+  /**
+   * FRONTEND ONLY
+   * User Routes will be /{username}/path
+   * Admin Routes will be /administrator/path
+   * 
+   * This will help avoid conflicts with backend routes /admin and /user
+   */
   return (
     <Router>
     <div className="App">
       <UserContext.Provider value={providerValue}>
           <NavbarComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
-          <div className="content">
+          <div className="content" style={{height:"100vh"}}>
           
             <Routes>
               
               <Route exact path="/" element={ <Home/> } />
               <Route path="/login" element={ <Login setLoggedIn={setLoggedIn}/> } />
               <Route path="/signup" element={ <Signup setLoggedIn={setLoggedIn}/> } />
-              <Route exact path="/admin" element={ <AdminDashboard /> } />
-              <Route exact path="/user" element= {<UserDashboard />} />
-              <Route path="/user/ride/:username" element= {<UserRideStatus />} />
-              <Route exact path="/admin/avstatus" element= {<AvStatuses />} />
-              <Route exact path="/admin/avstatus/:id" element={<AvStatus />} />
-              <Route exact path="/admin/users" element={<UserDetails />} />
-              <Route exact path="/admin/register" element={<RegisterAv />} />
+              <Route exact path="/profile" element={<UserProfile />} />
+
+              <Route exact path="/:username" element= {<UserDashboard />} />
+              <Route path="/:username/ride" element= {<UserRideStatus />} />
+
+              <Route exact path="/administrator" element={ <AdminDashboard /> } />
+              <Route exact path="/administrator/avstatus" element= {<AvStatuses />} />
+              <Route exact path="/administrator/avstatus/:id" element={<AvStatus />} />
+              <Route exact path="/administrator/users" element={<UserDetails />} />
+              <Route exact path="/administrator/register" element={<RegisterAv />} />
+                            
+              <Route path="/*" element={<Home/>} />
             </Routes>
           </div>
+
+          
         </UserContext.Provider>
     </div>
     </Router>

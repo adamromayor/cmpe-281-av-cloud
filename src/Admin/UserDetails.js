@@ -1,11 +1,13 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Container, Row } from "react-bootstrap";
+import DataGridWrapper from "../Components/DataGridWrapper";
 import useFetch from "../CustomHooks/useFetch";
 
 
 const UserDetails = () => {
 
-    const url = "http://localhost:8000/admin/admin/userlist"
+    const username = localStorage.getItem('username');
+    const url = "/admin/" + username + "/userlist"
     const {data:users, isPending, error} = useFetch(url);
 
     const columns: GridColDef[] = [
@@ -37,17 +39,10 @@ const UserDetails = () => {
             </Row>
             <Row>
             {/*Can't Use DataGridWrapper Because getRowId is used*/}
-            <div style={{ height: 600, width: '100%' }}>
-                {!isPending && !error && users && <DataGrid
-                    rows={users.users[0]}
-                    pageSize={10}
-                    getRowId={(row)=> row.userName}
-                    columns={columns}
-                    rowsPerPageOptions={[10]}
-                    //checkboxSelection
-                    disableSelectionOnClick
-                />}
-            </div>
+            
+            { !isPending && !error && users && 
+                <DataGridWrapper rows={users.users[0]} columns={columns} getRowId={(row)=>row.userName} />
+            }
             </Row>
         </Container>
     </div> );

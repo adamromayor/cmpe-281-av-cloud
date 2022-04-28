@@ -5,13 +5,14 @@ import useFetch from "../CustomHooks/useFetch";
 
 const UserDashboard = () => {
     const username = localStorage.getItem("username");
-    const url = "http://localhost:5050/rideTable?ride_status=in-progress&username=" + username;
+    const url = "/rideTable?ride_status=in-progress&username=" + username;
     const {data, isPending, error} = useFetch(url);
 
     const cardArray = [
-        {title:"Booking", description:"Book a Ride", url:"/user"},
-        {title:"Payment", description:"Manage Payments", url:"/user"},
-        {title:"History", description:"View Ride History", url:"/user"}
+        {title:"Profile", description:"View Profile", url:"/profile"},
+        {title:"Booking", description:"Book a Ride", url:"/"+username},
+        {title:"Payment", description:"Manage Payments", url:"/"+username},
+        {title:"History", description:"View Ride History", url:"/"+username}
     ]
 
 
@@ -27,7 +28,7 @@ const UserDashboard = () => {
         const card = {
             title:"Ride Status",
             description:"Track Vehicle",
-            url: "/user/ride/"+username
+            url: "/"+username+"/ride"
         }
 
         if(data && data.length > 0){
@@ -50,7 +51,7 @@ const UserDashboard = () => {
 
                 {
                     cardArray.map((card)=>{
-                        return(<DashboardCardComponent card={card} />);
+                        return(<DashboardCardComponent key={card.title} card={card} />);
                     })
                 }
 

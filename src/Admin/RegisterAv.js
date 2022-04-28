@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import {Badge, Button, Col, Container, Form, Row} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import FullColumnComponent from "../Components/FullColumnComponent";
 import useFetch from "../CustomHooks/useFetch";
 
 const RegisterAv = () => {   
-    const {data:vehicles, isPending, error} = useFetch("http://localhost:5050/vehicles");
+    const {data:vehicles, isPending, error} = useFetch("/vehicles");
     const [nextID, setID] = useState();
     const [success, setSuccess] = useState(null);
-
+    const navigate = useNavigate();
 
     useEffect(()=>{
         
@@ -50,7 +52,7 @@ const RegisterAv = () => {
             username: ""
         }
         
-        fetch('http://localhost:5050/vehicles', {
+        fetch('/vehicles', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(av)
@@ -77,20 +79,14 @@ const RegisterAv = () => {
     return ( <div className="registerav">
         <Container fluid>
             <Row >
-                <Col md="6" className="bg-dark d-none d-lg-block" style={{"height": "100vh"}}>
-                    <h2 style={{color:"white", 
-                                textAlign:"center", 
-                                justifyContent:"center",
-                                flex: 1,
-                                lineHeight: "100px"}}>Welcome to AV Cloud</h2>
-                </Col>
+                <FullColumnComponent title="Welcome to AV Cloud" />
                 <Col md="4" className="m-3">
                     <Row>
                         <h2>Register New Vehicle</h2>
                     </Row>
                     
-                    <Row >
-                        <Form onSubmit={handleSubmit}>
+                    {!isPending && !error && <Row >
+                        <Form onSubmit={handleSubmit} id="registration">
                         <Form.Group className="mb-3" >
                             <Form.Label>Make</Form.Label>
                             <Form.Control type="text" name="make" placeholder="Enter Vehicle Make" />
@@ -124,10 +120,21 @@ const RegisterAv = () => {
                         {success && <Button variant="secondary" type="submit" className="px-5 disabled">
                             Submit
                         </Button>}
+                        {success && 
+                            <Button 
+                                variant="secondary" 
+                                className="ms-3"
+                                onClick={() => { 
+                                    window.location.reload(false);
+                                }}
+                                >
+                                Register Another Vehicle
+                            </Button>
+                        }
 
                         </Form>
                         {registrationSuccess()}
-                    </Row>
+                    </Row>}
                     <Row md="auto">
                     
                     </Row>

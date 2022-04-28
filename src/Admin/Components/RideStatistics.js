@@ -6,7 +6,7 @@ import DataGridWrapper from "../../Components/DataGridWrapper";
 const RideStatistics = ({av_id}) => {
 
     
-    const {data:rides, isPending, error} = useFetch("http://localhost:5050/rides?av_id="+av_id);
+    const {data:rides, isPending, error} = useFetch("/rides?av_id="+av_id);
     
     useEffect(()=> {
         if(rides){

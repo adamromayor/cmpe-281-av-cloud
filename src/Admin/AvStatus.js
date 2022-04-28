@@ -10,78 +10,98 @@ import MapContainer from "../Components/MapContainer";
 
 const AvStatus = () => {
     const {id} = useParams();
-    const {data:vehicles, isPending, error} = useFetch("http://localhost:5050/vehicles");
-    const [av, setAv] = useState(null);
-    
+    const {data:vehicles, isPending, error} = useFetch("/admin/av/"+id);
+    const username = localStorage.getItem('username');
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
 
+    const [av, setAV] = useState(null);
     useEffect(()=>{
-        if(vehicles){
-            const tmpAv = vehicles.filter((v)=>{
-                return v.id === id;});
-
-            setAv(vehicles.filter((v)=>{
-                return v.id === id;
-            }));
-
-            if(tmpAv){
-                console.log("AV DATA: " + JSON.stringify(tmpAv));
-                const lat = parseFloat(tmpAv[0].location.split("&")[0]);
-                const lng = parseFloat(tmpAv[0].location.split("&")[1]);
-          
-                setLat(lat);
-                setLng(lng);
-                console.log(lat + " " + lng)
-            }
+        if(vehicles){ 
+            const Location = vehicles.AV[0].Location;
+            const lat = Location ? parseFloat(Location.split("&")[0]) : "";
+            const lng = Location ? parseFloat(Location.split("&")[1]) : "";
+            
+            setAV(vehicles.AV[0]);
+            
+            setLat(lat);
+            setLng(lng);
+            console.log("LOCATION: "+Location+ " "+lat + " " + lng);
         }
+
+        // if(vehicles){
+        //     const tmpAv = vehicles.filter((v)=>{
+        //         return v.id === id;});
+
+        //     setAv(vehicles.filter((v)=>{
+        //         return v.id === id;
+        //     }));
+
+        //     if(tmpAv){
+        //         console.log("AV DATA: " + JSON.stringify(tmpAv));
+        //         const lat = parseFloat(tmpAv[0].location.split("&")[0]);
+        //         const lng = parseFloat(tmpAv[0].location.split("&")[1]);
+          
+        //         setLat(lat);
+        //         setLng(lng);
+        //         console.log(lat + " " + lng)
+        //     }
+        // }
     }, [vehicles, id])
 
     const putState = (newState) =>{
-        const data = [{
-            serviceState: newState,
-            movingState: newState ==="deregistered" ? "" : av[0].movingState,
-            username: newState === "deregistered" ? "" : av[0].username,
-            location: newState === "deregistered" ? "" : av[0].location
-        }];
+        const data = {
+            av_id: id,
+            service_state: newState,
+            moving_state:  newState === "Deregistered" ? "" : av.Moving_State,
+            userName:      newState === "Deregistered" ? "" : av.userName,
+            av_location:   newState === "Deregistered" ? "" : av.Location
+        };
         //console.log(data);
         const requestOptions = {
-            method : "PUT",
+            method : "POST",
             headers: {"Content-Type" : "application/json"},
-            body : JSON.stringify(data[0])
+            body : JSON.stringify(data)
         };
 
-        fetch("http://localhost:5050/vehicles/"+id, requestOptions)
+        fetch("/admin/"+username+"/av/info", requestOptions)
             .then(response => response.json())
             .then(d => {
                 console.log(d);
-                setAv(data);
+                setAV({
+                    AV_ID: id,
+                    Moving_State: av.Moving_State,
+                    Service_State:newState,
+                    Location:av.Location,
+                    userName:av.userName
+                });
             })
             .catch((err) => {
                 console.log(err.message);
             });
     }
+
     const changeState = () =>{
 
-        if(!error && av && av[0].serviceState === "connected"){
+        if(!error && av && av.Service_State === "Connected"){
             return (
                 <Card.Footer className="text-center">
-                    <Button variant="secondary" onClick={()=>{putState("inactive")}}>
+                    <Button variant="secondary" onClick={()=>{putState("Inactive")}}>
                         Change Service State to Inactive
                     </Button>
-                    <Button variant="danger" className="m-3" onClick={()=>{putState("deregistered")}}>
+                    <Button variant="danger" className="m-3" onClick={()=>{putState("Deregistered")}}>
                         Deregister Vehicle
                     </Button>
                 </Card.Footer>
                 );    
         } 
-        else if(!error && av && av[0].serviceState === "inactive"){
+        else if(!error && av && av.Service_State === "Inactive"){
             return (
                 <Card.Footer className="text-center">
-                    <Button variant="success" onClick={()=> {putState("connected")}}>
+                    <Button variant="success" onClick={()=> {putState("Connected")}}>
                         Change Service State to Connected
                     </Button>
-                    <Button variant="danger" className="m-3" onClick={()=>{putState("deregistered")}}>
+                    <Button variant="danger" className="m-3" onClick={()=>{putState("Deregistered")}}>
                         Deregister Vehicle
                     </Button>
                 </Card.Footer>
@@ -93,39 +113,41 @@ const AvStatus = () => {
     return ( 
     <div>
         <Container className="py-3">
-            <h2>Status and Statistics of {id}</h2>
+            <h2>Status and Statistics of AV {id}</h2>
+            {isPending && !error && <p>Loading...</p>}
            {!isPending && !error && av && <Card className="my-3" style={{width: '25rem'}}>
-            <Card.Header>{id}</Card.Header>
+            <Card.Header>AV ID {id}</Card.Header>
                 <Card.Body >
-                    { av[0].serviceState === "active" && 
+                    {av.Service_State === "Active" && 
                         <Card.Title>Current Passenger</Card.Title>}
-                    {av[0].serviceState === "active" && 
-                        <Card.Text>{av[0].username}</Card.Text>}
+                    {av.Service_State === "Active" && 
+                        <Card.Text>{av.userName}</Card.Text>}
 
-                    {av[0].serviceState !== "deregistered" && 
+                    {av.Service_State !== "Deregistered" && 
                     <>
                     <Card.Title>Latitude</Card.Title>
-                    <Card.Text>{av[0].location.split("&")[0]}</Card.Text>
+                    <Card.Text>{lat}</Card.Text>
 
                     <Card.Title>Longitude</Card.Title>
-                    <Card.Text>{av[0].location.split("&")[1]}</Card.Text>
+                    <Card.Text>{lng}</Card.Text>
 
                     <Card.Title>Moving State</Card.Title>
-                    <Card.Text>{av[0].movingState}</Card.Text></>}
+                    <Card.Text>{av.Moving_State}</Card.Text></>}
                     
                     <Card.Title>Service State</Card.Title>
-                    <Card.Text>{av[0].serviceState}</Card.Text>
+                    <Card.Text>{av.Service_State}</Card.Text>
                 </Card.Body>
                 {changeState()}
             </Card>} 
-            <Row>
+            {/* <Row>
                 <RideStatistics av_id={id} />
             </Row>
             <Row>
             <ServiceRecords av_id={id} />
-            </Row>
-            {!isPending && !error && av && av[0].serviceState !== "deregistered" && 
+    </Row> */}
+            {!isPending && !error && av && av.serviceState !== "deregistered" && 
             <Row className="mt-5">
+    
             <h2>Vehicle Location</h2>
             <Col className="mt-3">
                     {lat && lng && <MapContainer lat={lat} lng={lng}/>}

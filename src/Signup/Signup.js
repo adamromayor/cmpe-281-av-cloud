@@ -8,6 +8,7 @@ import { useState } from "react";
 //import { useContext, useState } from "react";
 //import { UserContext } from "../CustomHooks/UserContext";
 import { Badge } from "react-bootstrap";
+import FullColumnComponent from "../Components/FullColumnComponent";
 
 
 const Signup = ({setLoggedIn}) => {
@@ -39,7 +40,7 @@ const Signup = ({setLoggedIn}) => {
         const url = isAdmin ? "/admin/signup" : "/user/signup"
 
         
-        fetch('http://localhost:8000' + url, {
+        fetch(url, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
@@ -49,7 +50,7 @@ const Signup = ({setLoggedIn}) => {
               
             if(data.status === 200){
                 console.log("Signup Successful: " + data.userName);
-                const navigate_url = isAdmin ? "/admin" : "/user";
+                const navigate_url = isAdmin ? "/administrator" : "/"+data.userName;
 
 
                 //setUser(data.userName);
@@ -77,13 +78,7 @@ const Signup = ({setLoggedIn}) => {
             
             <Container fluid>
             <Row>
-                <Col md="6" className="bg-dark d-none d-lg-block" style={{"height": "100vh"}}>
-                    <h2 style={{color:"white", 
-                                textAlign:"center", 
-                                justifyContent:"center",
-                                flex: 1,
-                                lineHeight: "100px"}}>Welcome to AV Cloud</h2>
-                </Col>
+                <FullColumnComponent title="Welcome to AV Cloud" />
                 <Col md="4" className="m-3">
                     <h2>Signup</h2>
                     <Form onSubmit={handleSubmit}>

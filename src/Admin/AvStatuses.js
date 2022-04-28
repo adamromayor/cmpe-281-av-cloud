@@ -4,11 +4,13 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useFetch from "../CustomHooks/useFetch";
+import DataGridWrapper from "../Components/DataGridWrapper";
 
 const AvStatuses = () => {
 
     const navigate = useNavigate();
-    const {data:vehicles, isPending, error} = useFetch("http://localhost:5050/vehicles");
+    //const {data:vehicles, isPending, error} = useFetch("/vehicles");
+    const {data:vehicles, isPending, error} = useFetch("/admin/av/all");
     
     const [active, setActive] = useState(0);
     const [inactive, setInactive] = useState(0);
@@ -16,48 +18,51 @@ const AvStatuses = () => {
     const [deregistered, setDeregistered] = useState(0);
     const [total, setTotal] = useState(0);
 
-
     useEffect(()=> {
         if(vehicles){
-            vehicles.forEach(vehicle => {
-                vehicle["url"] = "/admin/avstatus/" + vehicle.id;
-                vehicle["lat"] = vehicle.location.split("&")[0];
-                vehicle["lon"] = vehicle.location.split("&")[1];
+            vehicles.AVs.forEach(vehicle => {
+                
+                vehicle["url"] = "/administrator/avstatus/" + vehicle.AV_ID;
+                
+                vehicle["lat"] = vehicle.Location ? vehicle.Location.split("&")[0] : "";
+                vehicle["lon"] = vehicle.Location ? vehicle.Location.split("&")[1] : "";
+                vehicle["id"] = vehicle.AV_ID;
+                
             }) 
-
-        setActive(vehicles.filter((vehicle) => { return vehicle.serviceState==='active'}).length);
-        setInactive(vehicles.filter((vehicle) => { return vehicle.serviceState==='inactive'}).length);
-        setConnected(vehicles.filter((vehicle) => { return vehicle.serviceState==='connected'}).length);
-        setDeregistered(vehicles.filter((vehicle) => { return vehicle.serviceState==='deregistered'}).length);
-        setTotal(vehicles.length);
+    
+            setActive(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Active'}).length);
+            setInactive(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Inactive'}).length);
+            setConnected(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Connected'}).length);
+            setDeregistered(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Deregistered'}).length);
+            setTotal(vehicles.AVs.length);
         }
     }, [vehicles]);
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 100 },
         {
-            field: 'serviceState',
+            field: 'Service_State',
             headerName: 'Service State',
             width: 150,
             renderCell: (params: GridRenderCellParams<String>) => (
                 <div>
-                    { params.value === "active" && <Badge bg="primary">{params.value}</Badge>}
-                    { params.value === "connected" && <Badge bg="success">{params.value}</Badge>}
-                    { params.value === "inactive" && <Badge bg="danger">{params.value}</Badge>}
-                    { params.value === "deregistered" && <Badge bg="secondary">{params.value}</Badge>}
+                    { params.value === "Active" && <Badge bg="primary">{params.value}</Badge>}
+                    { params.value === "Connected" && <Badge bg="success">{params.value}</Badge>}
+                    { params.value === "Inactive" && <Badge bg="danger">{params.value}</Badge>}
+                    { params.value === "Deregistered" && <Badge bg="secondary">{params.value}</Badge>}
                 </div>
                 
             ),
           },
         {
-          field: 'movingState',
+          field: 'Moving_State',
           headerName: 'Moving State',
           width: 150,
           editable: false,
           
         },
         {
-          field: 'username',
+          field: 'userName',
           headerName: 'Username',
           width: 110,
           editable: false,
@@ -122,15 +127,16 @@ const AvStatuses = () => {
                 <Row className="py-3">
                     <h3>Registered Vehicles</h3>
                 </Row>
+
                 <div style={{ height: 600, width: '100%' }}>
-                    {vehicles && <DataGrid
-                        rows={vehicles}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        //checkboxSelection
-                        disableSelectionOnClick
-                    />}
+                {isPending && !error && <p>Loading...</p>}
+                {!isPending && vehicles && 
+                    <DataGridWrapper 
+                        rows={vehicles.AVs} 
+                        columns={columns} 
+                        getRowId={(row)=> row.AV_ID}
+                    />
+                }               
                 </div>
             </Container>
             

@@ -6,9 +6,10 @@ const AdminDashboard = () => {
     const user = localStorage.getItem("username");
 
     const cardArray = [
-        {title:"Vehicle Status", description:"View Status of All Vehicles", url:"/admin/avstatus"},
-        {title:"User Information", description:"View All Users", url:"/admin/users"},
-        {title:"Register AV", description:"Register a new vehicle", url:"/admin/register"}
+        {title:"Profile", description:"View Profile", url:"/profile"},
+        {title:"Vehicle Status", description:"View Status of All Vehicles", url:"/administrator/avstatus"},
+        {title:"User Information", description:"View All Users", url:"/administrator/users"},
+        {title:"Register AV", description:"Register a new vehicle", url:"/administrator/register"}
     ]
 
     return (
@@ -21,7 +22,7 @@ const AdminDashboard = () => {
                 <Row xs={1} md={3}  className="mt-3">
                 {
                     cardArray.map((card)=>{
-                        return(<DashboardCardComponent card={card} />)
+                        return(<DashboardCardComponent key={card.title} card={card} />)
                     })
                 }
                 </Row>
