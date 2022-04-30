@@ -8,37 +8,22 @@ import useFetch from "../CustomHooks/useFetch";
 const UserRideStatus = () => {
     
     const { username } = useParams();
-    const url = "/rideTable?ride_status=in-progress&username=" + username
+    const url = "/user/" + username + "/booking/status";
     const {data:ride, isPending, error} = useFetch(url);
-    
-    const avUrl = "/vehicles?username=" + username;
-    const {data:av, avIsPending, averror} = useFetch(avUrl);
-
-    const [activeRide, setRide] = useState(null);
-    const [latLng, setLatLng] = useState(null);
-    
+    const [loc, setLoc] = useState(null)
+    const [lat, setLat] = useState(null);
+    const [lng, setLng] = useState(null);
     useEffect(()=> {
-        if(ride){
-            ride.forEach(r => {
-                r["s_lat_lon"] = r.startLocation.replace("&",", ");
-                r["d_lat_lon"] = r.finishLocation.replace("&",", ");
-            }) 
-            console.log(ride)
-            setRide(ride[0]);
+        if(ride && ride.status===200){
+            ride.AV_Status.loc = ride.AV_Status.location.replace("&",", ");
+            console.log(JSON.stringify(ride));
+            setLoc(ride.AV_Status.loc);
+            setLat(ride.AV_Status.loc.split(", ")[0]);
+            setLng(ride.AV_Status.loc.split(", ")[1]);
+            console.log("LOCATION: ", lat,lng)
         }
 
-        if(av){
-            console.log("AV DATA: " + JSON.stringify(av));
-            const lat = parseFloat(av[0].location.split("&")[0]);
-            const lng = parseFloat(av[0].location.split("&")[1]);
-            setLatLng({
-                lat: lat,
-                lng: lng
-            });
-        }
-
-
-    }, [ride, av]);
+    }, [ride, loc]);
 
     
 
@@ -49,7 +34,7 @@ const UserRideStatus = () => {
 
         <Row>
             <Col>
-                { !isPending && activeRide && 
+                {/* { !isPending && activeRide && 
                     <Card >
                     <Card.Header>Ride Status</Card.Header>
                     <Card.Body>
@@ -67,21 +52,23 @@ const UserRideStatus = () => {
                         <Card.Text>{activeRide.estimatedArrival}</Card.Text>
                     </Card.Body>
                     
-                    </Card>}
+                    </Card>} */}
                     
             </Col>
             <Col>
-            { latLng && activeRide && <Card>
+            { !isPending && !error && ride && ride.status===200 &&
+            
+            <Card>
                     <Card.Header>Vehicle Location</Card.Header>
                     <Card.Body>
                         <Card.Title>Current Location</Card.Title>
-                        <Card.Text>{latLng.lat +", "+latLng.lng}</Card.Text>
+                        <Card.Text>{loc}</Card.Text>
                        
-                        <Card.Title>Start Location</Card.Title>
+                        {/* <Card.Title>Start Location</Card.Title>
                         <Card.Text>{activeRide.s_lat_lon}</Card.Text>
 
                         <Card.Title>Destination</Card.Title>
-                        <Card.Text>{activeRide.d_lat_lon}</Card.Text>
+                        <Card.Text>{activeRide.d_lat_lon}</Card.Text> */}
 
                     </Card.Body>
                     
@@ -94,7 +81,7 @@ const UserRideStatus = () => {
         </Row>
         <Row>
             <Col className="mt-3">
-                    {latLng && <MapContainer lat={latLng.lat} lng={latLng.lng}/>}
+                    {lat && lng && <MapContainer lat={lat} lng={lng}/>}
             </Col>
         </Row>
     </Container>  );

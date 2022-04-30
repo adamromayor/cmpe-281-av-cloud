@@ -5,22 +5,31 @@ import DataGridWrapper from "../../Components/DataGridWrapper";
 
 const RideStatistics = ({av_id}) => {
 
-    
-    const {data:rides, isPending, error} = useFetch("/rides?av_id="+av_id);
+    const url = "/admin/av/" + av_id + "/ride/history"
+    const {data:rides, isPending, error} = useFetch(url);
     
     useEffect(()=> {
-        if(rides){
-            rides.forEach(ride => {
-                ride["s_lat_lon"] = ride.startLocation.replace("&",", ");
-                ride["d_lat_lon"] = ride.finishLocation.replace("&",", ");
+        if(rides && rides.status===200){
+            rides.AV_Ride_History.forEach(ride => {
+                ride.s_lat_lon = ride.Start_Location ? ride.Start_Location.replace("&",", ") : "No Location";
+                ride.d_lat_lon = ride.End_Location ? ride.End_Location.replace("&",", ") : "No Destination";
+                ride.Ride_Date  = ride.Ride_Date ? ride.Ride_Date : "No Date";
+                ride.Estimated_Arrival = ride.Estimated_Arrival ? ride.Estimated_Arrival : "No ETA";
             }) 
         }
     }, [rides]);
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'Ride_ID', headerName: 'Ride ID', width: 100 },
         {
-            field: 'username',
+            field: 'Ride_Date',
+            headerName: 'Date',
+            width: 160,
+            editable: false,
+            sortable: true
+        },
+        {
+            field: 'Username',
             headerName: 'Username',
             width: 110,
             editable: false,
@@ -35,7 +44,7 @@ const RideStatistics = ({av_id}) => {
             width: 160,
           
         },
-        {
+        { 
             field: 'd_lat_lon',
             headerName: 'Destination',
             description: 'This column has a value getter and is not sortable.',
@@ -45,8 +54,8 @@ const RideStatistics = ({av_id}) => {
             
         },
         {
-            field: 'powerUsed',
-            headerName: 'Power Used',
+            field: 'Estimated_Arrival',
+            headerName: 'Estimate Arrival',
             width: 160,
             editable: false,
             sortable: true
@@ -57,9 +66,13 @@ const RideStatistics = ({av_id}) => {
     return (  
         <Container className="py-3">
             <h2>Ride Statistics</h2>
-            {!error && rides && <p>{rides.length} total trips provided.</p>}
-            {!error && !isPending && rides &&
-                <DataGridWrapper rows={rides} columns={columns} />
+            {isPending && !error && <p>Loading...</p>}
+            {!error && rides && rides.status!==200 && <p>No AV Ride History Available</p>}
+            {!error && rides && rides.status===200 &&
+                <p>{rides.AV_Ride_History.length} total trips provided.</p>
+            }
+            {!error && !isPending && rides && rides.status===200 &&
+                <DataGridWrapper rows={rides.AV_Ride_History} columns={columns} getRowId={(row)=>row.Ride_ID}/>
             }
         </Container>
     );

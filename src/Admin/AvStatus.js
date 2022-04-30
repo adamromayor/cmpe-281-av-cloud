@@ -139,12 +139,13 @@ const AvStatus = () => {
                 </Card.Body>
                 {changeState()}
             </Card>} 
-            {/* <Row>
+            <Row>
                 <RideStatistics av_id={id} />
             </Row>
             <Row>
-            <ServiceRecords av_id={id} />
-    </Row> */}
+                <ServiceRecords av_id={id} />
+            </Row>
+             
             {!isPending && !error && av && av.serviceState !== "deregistered" && 
             <Row className="mt-5">
     

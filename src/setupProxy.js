@@ -14,7 +14,7 @@ const localProxy = {
 
 module.exports = function(app) {
   app.use(
-    ['/user','/admin'],
+    ['/user','/admin', '/av_sim'],
     createProxyMiddleware(dbProxy)
   );
 

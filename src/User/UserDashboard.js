@@ -5,7 +5,7 @@ import useFetch from "../CustomHooks/useFetch";
 
 const UserDashboard = () => {
     const username = localStorage.getItem("username");
-    const url = "/rideTable?ride_status=in-progress&username=" + username;
+    const url = "/user/" + username + "/booking/status";
     const {data, isPending, error} = useFetch(url);
 
     const cardArray = [
@@ -31,7 +31,7 @@ const UserDashboard = () => {
             url: "/"+username+"/ride"
         }
 
-        if(data && data.length > 0){
+        if(data && data.status === 200){
             return (<DashboardCardComponent card={card} / >);
         }
 
