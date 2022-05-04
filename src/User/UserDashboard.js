@@ -10,7 +10,6 @@ const UserDashboard = () => {
 
     const cardArray = [
         {title:"Profile", description:"View Profile", url:"/profile"},
-        {title:"Booking", description:"Book a Ride", url:"/"+username},
         {title:"Payment", description:"Manage Payments", url:"/"+username},
         {title:"History", description:"View Ride History", url:"/"+username}
     ]
@@ -37,7 +36,21 @@ const UserDashboard = () => {
 
         else return;
     }
+    
+    const showBookingButton = () => {
+        const card = {
+            title:"Booking",
+            description:"Book a Ride",
+            url: "/"+username
+        }
 
+        if(data && data.status !== 200){
+            console.log(data)
+            return (<DashboardCardComponent card={card} / >);
+        }
+
+        else return;
+    }
 
     return ( 
         <div className="user">
@@ -48,7 +61,7 @@ const UserDashboard = () => {
                 </Row>
                 <Row xs={1} md={2} >
                     {showRideStatusButton()}
-
+                    {showBookingButton()}
                 {
                     cardArray.map((card)=>{
                         return(<DashboardCardComponent key={card.title} card={card} />);
