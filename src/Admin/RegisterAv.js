@@ -1,35 +1,17 @@
 import { useEffect, useState } from "react";
 import {Badge, Button, Col, Container, Form, Row} from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import FullColumnComponent from "../Components/FullColumnComponent";
 import useFetch from "../CustomHooks/useFetch";
 
 const RegisterAv = () => {   
-    const {data:vehicles, isPending, error} = useFetch("/vehicles");
-    const [nextID, setID] = useState();
+    
     const [success, setSuccess] = useState(null);
-    const navigate = useNavigate();
-
-    useEffect(()=>{
-        
-        if(vehicles){
-             
-            var tmpArray = [];
-            vehicles.forEach(element => {
-                tmpArray.push(element.id);
-            });
-            tmpArray.sort();
-            tmpArray.sort((a, b) => a.length - b.length);
-            const lastID = tmpArray[tmpArray.length - 1];
-            const id = "av-id-" + (parseInt(lastID.split("-")[2]) + 1)
-            setID(id);
-            console.log(id);
-        }
-    }, [vehicles])
+    const [newId, setId] = useState(null);
+    const username = localStorage.getItem("username");
 
     const registrationSuccess = () => {
-        if(success === true){
-            return (<Badge className="mt-3 bg-success">Registration Successful: {nextID}</Badge>);
+        if(success === true && newId){
+            return (<Badge className="mt-3 bg-success">Registration Successful: AV ID {newId}</Badge>);
         } else if (success === false){
             return (<Badge className="mt-3 bg-danger">Registration Failed</Badge>);
         }
@@ -37,33 +19,52 @@ const RegisterAv = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        //const make = e.target.make.value;
-        //const model = e.target.model.value;
-        //const year =  e.target.year.value;
-        //const license = e.target.license.value;
-        //const status = "connected";
-        
+        const make = e.target.make.value;
+        const model = e.target.model.value;
+        const year =  e.target.year.value;
+        const license = e.target.license.value;
 
         const av = {
-            id:nextID,
-            serviceState:"connected",
-            movingState: "stopped",
-            location: "pending",
-            username: ""
+            av_year: year,
+            av_make: make,
+            av_model: model,
+            av_license: license
         }
         
-        fetch('/vehicles', {
+        fetch('/admin/av/register', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(av)
         })
         .then((res) => res.json())
         .then((data) => {
-              
-            if(data.status === 200 || data.id === nextID){
+            console.log("DATA")
+            console.log(data);
+            if(data.status === 200){
                 console.log("Registration Successful: " + JSON.stringify(data));
-
                 setSuccess(true);
+                setId(data.New_AV_ID)
+            
+                // Update AV status to Connected and Parked
+                const av_state = {
+                    av_id: data.New_AV_ID,
+                    service_state: "Connected",
+                    moving_state: "Parked",
+                }
+
+                fetch('/admin/' + username +'/av/info',{
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(av_state)
+                })
+                .then((r)=> r.json())
+                .then((d)=>{
+                    if(d.status===200)
+                        console.log("State Updated Successfully")
+                    else
+                        console.log("Failed to Update AV State")
+                })
+                // END OF AV STATUS UPDATE
             }
             else{
                 console.log("Register Failed: " + JSON.stringify(data));
@@ -74,6 +75,7 @@ const RegisterAv = () => {
             console.log("ERROR: "+err.message);
             setSuccess(false);
         })
+        
     }
 
     return ( <div className="registerav">
@@ -85,7 +87,7 @@ const RegisterAv = () => {
                         <h2>Register New Vehicle</h2>
                     </Row>
                     
-                    {!isPending && !error && <Row >
+                    <Row >
                         <Form onSubmit={handleSubmit} id="registration">
                         <Form.Group className="mb-3" >
                             <Form.Label>Make</Form.Label>
@@ -134,7 +136,7 @@ const RegisterAv = () => {
 
                         </Form>
                         {registrationSuccess()}
-                    </Row>}
+                    </Row>
                     <Row md="auto">
                     
                     </Row>

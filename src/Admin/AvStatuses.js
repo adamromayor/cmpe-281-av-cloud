@@ -29,7 +29,8 @@ const AvStatuses = () => {
                 vehicle["id"] = vehicle.AV_ID;
                 
             }) 
-    
+            
+            console.log(vehicles)
             setActive(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Active'}).length);
             setInactive(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Inactive'}).length);
             setConnected(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Connected'}).length);

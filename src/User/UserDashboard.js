@@ -10,15 +10,14 @@ const UserDashboard = () => {
 
     const cardArray = [
         {title:"Profile", description:"View Profile", url:"/profile"},
-        {title:"Payment", description:"Manage Payments", url:"/"+username},
-        {title:"History", description:"View Ride History", url:"/"+username}
+        {title:"Payment", description:"Manage Payments", url:"/"+username+"/invoices"},
+        {title:"History", description:"View Ride History", url:"/"+username+"/history"}
     ]
-
 
 
     useEffect(()=>{
         if(data){
-            //console.log(data)
+            console.log(data)
         }
     }, [data])
 
@@ -41,7 +40,7 @@ const UserDashboard = () => {
         const card = {
             title:"Booking",
             description:"Book a Ride",
-            url: "/"+username
+            url: "/"+username+"/book"
         }
 
         if(data && data.status !== 200){
@@ -59,7 +58,7 @@ const UserDashboard = () => {
                 <h2>User Dashboard</h2>
                 <p>Welcome {username}</p>
                 </Row>
-                <Row xs={1} md={2} >
+               {!isPending && !error &&  <Row xs={1} md={2} >
                     {showRideStatusButton()}
                     {showBookingButton()}
                 {
@@ -67,8 +66,7 @@ const UserDashboard = () => {
                         return(<DashboardCardComponent key={card.title} card={card} />);
                     })
                 }
-
-                </Row>
+                </Row>}
             </Container>
         </div>
     );

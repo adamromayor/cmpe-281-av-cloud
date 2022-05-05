@@ -13,14 +13,29 @@ const UserRideStatus = () => {
     const [loc, setLoc] = useState(null)
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
+    const [startLoc, setStart] = useState(null)
+    const [destLoc, setDest] = useState(null)
+    const [eta, setEta] = useState(null)
+
     useEffect(()=> {
         if(ride && ride.status===200){
+            console.log(ride);
+            console.log(username);
             ride.AV_Status.loc = ride.AV_Status.location.replace("&",", ");
-            console.log(JSON.stringify(ride));
+            
             setLoc(ride.AV_Status.loc);
             setLat(ride.AV_Status.loc.split(", ")[0]);
             setLng(ride.AV_Status.loc.split(", ")[1]);
-            console.log("LOCATION: ", lat,lng)
+            
+            const start = ride.AV_Status.start_location;
+            const dest = ride.AV_Status.finish_lcation;
+
+            const eta = ride.AV_Status.estimated_arrival;
+            
+            setEta(eta ? eta : "No ETA")
+            setStart(start ? start.replace("&", ", ") : "No Start");
+            setDest(dest ? dest.replace("&",", ") : "No Destination");
+            //console.log("LOCATION: ", lat,lng)
         }
 
     }, [ride, loc]);
@@ -34,25 +49,22 @@ const UserRideStatus = () => {
 
         <Row>
             <Col>
-                {/* { !isPending && activeRide && 
+                { !isPending && ride && ride.status === 200 && 
                     <Card >
                     <Card.Header>Ride Status</Card.Header>
                     <Card.Body>
                         
                         <Card.Title>Ride No.</Card.Title>
-                        <Card.Text>{activeRide.id}</Card.Text>
+                        <Card.Text>{ride.AV_Status.Ride_ID}</Card.Text>
 
-                        <Card.Title>Ride Status</Card.Title>
-                        <Card.Text>{activeRide.ride_status}</Card.Text>
-
-                        <Card.Title>Date</Card.Title>
-                        <Card.Text>{activeRide.date}</Card.Text>
+                        <Card.Title>AV Moving State</Card.Title>
+                        <Card.Text>{ride.AV_Status.moving_state}</Card.Text>
 
                         <Card.Title>Estimated Arrival</Card.Title>
-                        <Card.Text>{activeRide.estimatedArrival}</Card.Text>
+                        <Card.Text>{eta}</Card.Text>
                     </Card.Body>
                     
-                    </Card>} */}
+                    </Card>}
                     
             </Col>
             <Col>
@@ -64,11 +76,11 @@ const UserRideStatus = () => {
                         <Card.Title>Current Location</Card.Title>
                         <Card.Text>{loc}</Card.Text>
                        
-                        {/* <Card.Title>Start Location</Card.Title>
-                        <Card.Text>{activeRide.s_lat_lon}</Card.Text>
+                        <Card.Title>Start Location</Card.Title>
+                        <Card.Text>{startLoc}</Card.Text>
 
                         <Card.Title>Destination</Card.Title>
-                        <Card.Text>{activeRide.d_lat_lon}</Card.Text> */}
+                        <Card.Text>{destLoc}</Card.Text>
 
                     </Card.Body>
                     

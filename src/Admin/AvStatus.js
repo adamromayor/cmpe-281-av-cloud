@@ -26,27 +26,9 @@ const AvStatus = () => {
             
             setLat(lat);
             setLng(lng);
-            console.log("LOCATION: "+Location+ " "+lat + " " + lng);
+            //console.log(vehicles)
+            //console.log("LOCATION: "+Location+ " "+lat + " " + lng);
         }
-
-        // if(vehicles){
-        //     const tmpAv = vehicles.filter((v)=>{
-        //         return v.id === id;});
-
-        //     setAv(vehicles.filter((v)=>{
-        //         return v.id === id;
-        //     }));
-
-        //     if(tmpAv){
-        //         console.log("AV DATA: " + JSON.stringify(tmpAv));
-        //         const lat = parseFloat(tmpAv[0].location.split("&")[0]);
-        //         const lng = parseFloat(tmpAv[0].location.split("&")[1]);
-          
-        //         setLat(lat);
-        //         setLng(lng);
-        //         console.log(lat + " " + lng)
-        //     }
-        // }
     }, [vehicles, id])
 
     const putState = (newState) =>{
@@ -146,7 +128,7 @@ const AvStatus = () => {
                 <ServiceRecords av_id={id} />
             </Row>
              
-            {!isPending && !error && av && av.serviceState !== "deregistered" && 
+            {!isPending && !error && av && av.Service_State !== "Deregistered" && 
             <Row className="mt-5">
     
             <h2>Vehicle Location</h2>

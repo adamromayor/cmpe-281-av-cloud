@@ -57,7 +57,7 @@ const NavbarComponent = ({loggedIn, setLoggedIn}) => {
                     </Nav>
                     {loggedIn && isAdmin === "1" &&
                         <Nav>
-                            <Link className="nav-link" to="/administrator">AV Statuses</Link>
+                            <Link className="nav-link" to="/administrator/avstatus">AV Statuses</Link>
                             <Link className="nav-link" to="/administrator/register">Register AV</Link>
                             <Link className="nav-link" to="/administrator/users">User Details</Link>
                         </Nav>
@@ -65,9 +65,8 @@ const NavbarComponent = ({loggedIn, setLoggedIn}) => {
 
                     {loggedIn &&  isAdmin === "0" &&
                         <Nav className="mr-auto">
-                            <Link className="nav-link" to={"/"+username}>Book Ride</Link>
-                            <Link className="nav-link" to={"/"+username}>Billing</Link>
-                            <Link className="nav-link" to={"/"+username}>History</Link>
+                            <Link className="nav-link" to={"/"+username+"/invoices"}>Billing</Link>
+                            <Link className="nav-link" to={"/"+username+"/history"}>History</Link>
                         </Nav>
                     }
                     <Nav className="mr-auto">

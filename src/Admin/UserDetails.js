@@ -1,4 +1,4 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import { Container, Row } from "react-bootstrap";
 import DataGridWrapper from "../Components/DataGridWrapper";
 import useFetch from "../CustomHooks/useFetch";
@@ -11,7 +11,6 @@ const UserDetails = () => {
     const {data:users, isPending, error} = useFetch(url);
 
     const columns: GridColDef[] = [
-        //{ field: 'id', headerName: 'ID', width: 100 },
         {
             field: 'userEmail',
             headerName: 'Email',
@@ -38,8 +37,6 @@ const UserDetails = () => {
             <h2>User Details</h2>
             </Row>
             <Row>
-            {/*Can't Use DataGridWrapper Because getRowId is used*/}
-            
             { !isPending && !error && users && 
                 <DataGridWrapper rows={users.users[0]} columns={columns} getRowId={(row)=>row.userName} />
             }

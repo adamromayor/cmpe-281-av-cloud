@@ -1,22 +1,23 @@
-import useFetch from "../../CustomHooks/useFetch";
-import { Container } from "react-bootstrap";
 import { useEffect } from "react";
+import { Container } from "react-bootstrap";
 import DataGridWrapper from "../../Components/DataGridWrapper";
+import useFetch from "../../CustomHooks/useFetch";
 
-const RideStatistics = ({av_id}) => {
+const RidesInProgress = () => {
 
-    const url = "/admin/av/" + av_id + "/ride/history"
+    const username = localStorage.getItem('username')
+    const url = "/admin/" + username + "/ride/active"
     const {data:rides, isPending, error} = useFetch(url);
     
     useEffect(()=> {
         if(rides && rides.status===200){
-            rides.AV_Ride_History.forEach(ride => {
+            console.log(rides)
+            rides.Active_rides.forEach(ride => {
                 ride.s_lat_lon = ride.Start_Location ? ride.Start_Location.replace("&",", ") : "No Location";
                 ride.d_lat_lon = ride.End_Location ? ride.End_Location.replace("&",", ") : "No Destination";
                 ride.Ride_Date  = ride.Ride_Date ? ride.Ride_Date : "No Date";
                 ride.Estimated_Arrival = ride.Estimated_Arrival ? ride.Estimated_Arrival : "No ETA";
             }) 
-            console.log(rides)
         }
     }, [rides]);
 
@@ -63,20 +64,19 @@ const RideStatistics = ({av_id}) => {
         },
       ];
 
-
-    return (  
+    return ( 
         <Container className="py-3">
             <h2>Ride Statistics</h2>
             {isPending && !error && <p>Loading...</p>}
-            {!error && rides && rides.status!==200 && <p>No AV Ride History Available</p>}
+            {!error && rides && rides.status!==200 && <p>No Rides In Progress</p>}
             {!error && rides && rides.status===200 &&
-                <p>{rides.AV_Ride_History.length} total trips provided.</p>
+                <p>{rides.Active_rides.length} rides in progress.</p>
             }
             {!error && !isPending && rides && rides.status===200 &&
-                <DataGridWrapper rows={rides.AV_Ride_History} columns={columns} getRowId={(row)=>row.Ride_ID}/>
+                <DataGridWrapper rows={rides.Active_rides} columns={columns} getRowId={(row)=>row.Ride_ID}/>
             }
         </Container>
-    );
+     );
 }
  
-export default RideStatistics;
+export default RidesInProgress;

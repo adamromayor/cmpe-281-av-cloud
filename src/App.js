@@ -13,6 +13,10 @@ import UserDashboard from './User/UserDashboard';
 import UserRideStatus from './User/UserRideStatus';
 import UserDetails from './Admin/UserDetails';
 import UserProfile from './User/UserProfile';
+import RideStatuses from './Admin/RideStatuses';
+import BookRide from './User/BookRide';
+import InvoiceHistory from './User/InvoiceHistory';
+import UserHistory from './User/UserHistory';
 
 function App() {
 
@@ -49,13 +53,16 @@ function App() {
 
               <Route exact path="/:username" element= {<UserDashboard />} />
               <Route path="/:username/ride" element= {<UserRideStatus />} />
+              <Route path="/:username/book" element= {<BookRide/>} />
+              <Route path="/:username/invoices" element= {<InvoiceHistory/>} />
+              <Route path="/:username/history" element= {<UserHistory/>} />
 
               <Route exact path="/administrator" element={ <AdminDashboard /> } />
               <Route exact path="/administrator/avstatus" element= {<AvStatuses />} />
               <Route exact path="/administrator/avstatus/:id" element={<AvStatus />} />
               <Route exact path="/administrator/users" element={<UserDetails />} />
               <Route exact path="/administrator/register" element={<RegisterAv />} />
-                            
+              <Route exact path="/administrator/rides" element = {<RideStatuses/>} />
               <Route path="/*" element={<Home/>} />
             </Routes>
           </div>

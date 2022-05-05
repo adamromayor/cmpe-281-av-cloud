@@ -8,7 +8,6 @@ const ServiceRecords = ({av_id}) => {
     const {data:records, isPending, error} = useFetch(url);
     
     useEffect(()=>{
-        console.log(url);
         if(records){
             records.items.Items.forEach((record)=>{
 
