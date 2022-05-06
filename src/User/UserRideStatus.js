@@ -28,7 +28,7 @@ const UserRideStatus = () => {
             setLng(ride.AV_Status.loc.split(", ")[1]);
             
             const start = ride.AV_Status.start_location;
-            const dest = ride.AV_Status.finish_lcation;
+            const dest = ride.AV_Status.finish_location;
 
             const eta = ride.AV_Status.estimated_arrival;
             

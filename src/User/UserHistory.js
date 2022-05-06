@@ -12,17 +12,22 @@ const UserHistory = () => {
 
     useEffect(()=> {
         if(rides && rides.status===200 && rides.bookings){
-            console.log(rides)
-            var num = 0;
+            console.log("RIDES: ", rides)
 
             var hist = rides.bookings;
             for(var i=0; i < hist.length; i++){
                 const start = rides.bookings[i].Start;
                 const dest = rides.bookings[i].Finish
-                const date = rides.bookings[i].Date
+                
+                var date;
+                if(rides.bookings[i].Date)
+                    date = new Date(rides.bookings[i].Date);
+                else
+                    date = null;
+                
                 rides.bookings[i].s_lat_lon = start ? start.replace("&",", ") : "No Location";
                 rides.bookings[i].d_lat_lon = dest ? dest.replace("&",", ") : "No Destination";
-                rides.bookings[i].Date  = date ? date : "No Date";
+                rides.bookings[i].Date  = date ? date.toLocaleString().split(',')[0] : "5/4/2022";
                 rides.bookings[i].id = i; // each row needs a unique ID
             }
             setBookingHistory(rides.bookings)
@@ -35,7 +40,7 @@ const UserHistory = () => {
         {
             field: 'Date',
             headerName: 'Date',
-            width: 160,
+            width: 110,
             editable: false,
             sortable: true
         },

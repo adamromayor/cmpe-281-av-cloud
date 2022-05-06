@@ -11,12 +11,18 @@ const RideStatistics = ({av_id}) => {
     useEffect(()=> {
         if(rides && rides.status===200){
             rides.AV_Ride_History.forEach(ride => {
+                
+                var date;
+                if(ride.Ride_Date)
+                    date = new Date(ride.Ride_Date);
+                else   
+                    date = null                
                 ride.s_lat_lon = ride.Start_Location ? ride.Start_Location.replace("&",", ") : "No Location";
                 ride.d_lat_lon = ride.End_Location ? ride.End_Location.replace("&",", ") : "No Destination";
-                ride.Ride_Date  = ride.Ride_Date ? ride.Ride_Date : "No Date";
-                ride.Estimated_Arrival = ride.Estimated_Arrival ? ride.Estimated_Arrival : "No ETA";
+                ride.Ride_Date  = date ? date.toLocaleString().split(',')[0] : "No Date";
+                ride.Estimated_Arrival = ride.Estimated_Arrival ? ride.Estimated_Arrival : "Complete";
             }) 
-            console.log(rides)
+            //console.log(rides)
         }
     }, [rides]);
 
@@ -25,7 +31,7 @@ const RideStatistics = ({av_id}) => {
         {
             field: 'Ride_Date',
             headerName: 'Date',
-            width: 160,
+            width: 110,
             editable: false,
             sortable: true
         },

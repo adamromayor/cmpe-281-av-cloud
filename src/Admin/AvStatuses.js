@@ -1,5 +1,5 @@
 import { Badge, Card, Container, Row } from "react-bootstrap";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -26,11 +26,11 @@ const AvStatuses = () => {
                 
                 vehicle["lat"] = vehicle.Location ? vehicle.Location.split("&")[0] : "";
                 vehicle["lon"] = vehicle.Location ? vehicle.Location.split("&")[1] : "";
-                vehicle["id"] = vehicle.AV_ID;
+                //vehicle["id"] = vehicle.AV_ID;
                 
             }) 
             
-            console.log(vehicles)
+            //console.log(vehicles)
             setActive(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Active'}).length);
             setInactive(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Inactive'}).length);
             setConnected(vehicles.AVs.filter((vehicle) => { return vehicle.Service_State==='Connected'}).length);
@@ -40,7 +40,7 @@ const AvStatuses = () => {
     }, [vehicles]);
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'AV_ID', headerName: 'ID', width: 100 },
         {
             field: 'Service_State',
             headerName: 'Service State',

@@ -48,9 +48,26 @@ const BookRide = () => {
                     setSuccess(true);
                     setBookingFailed(false);
                 
-                    
                 // Call /start-ride api
-    
+                
+                    const ride_data = {
+                        ride_id: data.Ride_ID,
+                        av_id: data.Booked_AV_ID,
+                        start: startString,
+                        destination: destString,
+                        username: username
+                    }
+
+                    fetch("/start-ride", {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(ride_data)
+                    })
+                    .then((res) => res.json())
+                    .then((d) => {
+                        console.log(d);
+                    });
+
                 }
                 else{
                     setSuccess(false);

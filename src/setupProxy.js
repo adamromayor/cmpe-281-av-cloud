@@ -6,8 +6,8 @@ const dbProxy = {
     secure: false
 }
 
-const localProxy = {
-    target: 'http://localhost:5050',
+const carlaProxy = {
+    target: "https://90ac-2601-646-9901-a210-00-7c34.ngrok.io",
     changeOrigin: true,
     secure: false
 }
@@ -19,7 +19,10 @@ module.exports = function(app) {
   );
 
   app.use(
-    ['/rides','/vehicles', '/serviceRecords', '/rideTable'],
-    createProxyMiddleware(localProxy)
+    ['/start-ride'],
+    createProxyMiddleware(carlaProxy)
   );
+
+
+
 };

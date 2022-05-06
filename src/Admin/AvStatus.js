@@ -68,24 +68,29 @@ const AvStatus = () => {
         if(!error && av && av.Service_State === "Connected"){
             return (
                 <Card.Footer className="text-center">
-                    <Button variant="secondary" onClick={()=>{putState("Inactive")}}>
-                        Change Service State to Inactive
-                    </Button>
-                    <Button variant="danger" className="m-3" onClick={()=>{putState("Deregistered")}}>
-                        Deregister Vehicle
-                    </Button>
+                    <Row>
+                        <Button variant="secondary" onClick={()=>{putState("Inactive")}}>
+                            Change Service State to Inactive
+                        </Button>
+                        <Button variant="danger" className="mt-3" onClick={()=>{putState("Deregistered")}}>
+                            Deregister Vehicle
+                        </Button>
+                    </Row>
                 </Card.Footer>
                 );    
         } 
         else if(!error && av && av.Service_State === "Inactive"){
             return (
                 <Card.Footer className="text-center">
-                    <Button variant="success" onClick={()=> {putState("Connected")}}>
-                        Change Service State to Connected
-                    </Button>
-                    <Button variant="danger" className="m-3" onClick={()=>{putState("Deregistered")}}>
-                        Deregister Vehicle
-                    </Button>
+                    <Row>
+                        <Button variant="success" onClick={()=> {putState("Connected")}}>
+                            Change Service State to Connected
+                        </Button>
+          
+                        <Button variant="danger" className="mt-3" onClick={()=>{putState("Deregistered")}}>
+                            Deregister Vehicle
+                        </Button>
+                    </Row>
                 </Card.Footer>
                 );    
         }
@@ -125,7 +130,9 @@ const AvStatus = () => {
                 <RideStatistics av_id={id} />
             </Row>
             <Row>
-                <ServiceRecords av_id={id} />
+                {av && av.Service_State && 
+                    <ServiceRecords av_id={id} service_state={av.Service_State}/>
+                }
             </Row>
              
             {!isPending && !error && av && av.Service_State !== "Deregistered" && 

@@ -17,7 +17,7 @@ const UserDashboard = () => {
 
     useEffect(()=>{
         if(data){
-            console.log(data)
+            //console.log(data)
         }
     }, [data])
 
@@ -44,7 +44,6 @@ const UserDashboard = () => {
         }
 
         if(data && data.status !== 200){
-            console.log(data)
             return (<DashboardCardComponent card={card} / >);
         }
 

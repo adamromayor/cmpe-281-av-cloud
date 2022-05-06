@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {Badge, Button, Col, Container, Form, Row} from "react-bootstrap";
 import FullColumnComponent from "../Components/FullColumnComponent";
-import useFetch from "../CustomHooks/useFetch";
 
 const RegisterAv = () => {   
     
@@ -50,6 +49,7 @@ const RegisterAv = () => {
                     av_id: data.New_AV_ID,
                     service_state: "Connected",
                     moving_state: "Parked",
+                    av_location: "37.3346653&-121.8753298"
                 }
 
                 fetch('/admin/' + username +'/av/info',{

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Badge, Button, Container, Row } from "react-bootstrap"
+import { Button, Container, Row } from "react-bootstrap"
 import DataGridWrapper from "../Components/DataGridWrapper";
 import useFetch from "../CustomHooks/useFetch";
 
@@ -15,6 +15,16 @@ const InvoiceHistory = () => {
             console.log(data)
             data.invoices.forEach(invoice =>{
                 invoice.action = invoice.Status === "outstanding" ? invoice.Invoice_ID : null;
+                
+                var date;
+                if(invoice.Date)
+                    date = new Date(invoice.Date);
+                else   
+                    date = null
+                
+                invoice.Date = date ? date.toLocaleString().split(',')[0] : "No Date";
+
+
             })
         }
 
@@ -65,7 +75,7 @@ const InvoiceHistory = () => {
         {
             field: 'Date',
             headerName: 'Date',
-            width: 200,
+            width: 110,
             editable: false,  
         },
         {
@@ -104,7 +114,7 @@ const InvoiceHistory = () => {
 
     return ( 
         <Container className="py-3">
-                <Row >
+                <Row className="mb-3">
                 <h2>Payment History</h2>
                 </Row>
                 
