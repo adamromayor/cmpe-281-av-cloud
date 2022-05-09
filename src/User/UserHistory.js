@@ -28,7 +28,7 @@ const UserHistory = () => {
                 rides.bookings[i].s_lat_lon = start ? start.replace("&",", ") : "No Location";
                 rides.bookings[i].d_lat_lon = dest ? dest.replace("&",", ") : "No Destination";
                 rides.bookings[i].Date  = date ? date.toLocaleString().split(',')[0] : "5/4/2022";
-                rides.bookings[i].id = i; // each row needs a unique ID
+                rides.bookings[i].id = hist.length - i; // each row needs a unique ID
             }
             setBookingHistory(rides.bookings)
             
