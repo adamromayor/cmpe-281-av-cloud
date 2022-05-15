@@ -13,9 +13,15 @@ const RidesInProgress = () => {
         if(rides && rides.status===200){
             console.log(rides)
             rides.Active_rides.forEach(ride => {
+                var date;
+                if(ride.Ride_Date)
+                    date = new Date(ride.Ride_Date);
+                else   
+                    date = null    
+
                 ride.s_lat_lon = ride.Start_Location ? ride.Start_Location.replace("&",", ") : "No Location";
                 ride.d_lat_lon = ride.End_Location ? ride.End_Location.replace("&",", ") : "No Destination";
-                ride.Ride_Date  = ride.Ride_Date ? ride.Ride_Date : "No Date";
+                ride.Ride_Date  = date ? date.toLocaleString().split(',')[0] : "No Date";
                 ride.Estimated_Arrival = ride.Estimated_Arrival ? ride.Estimated_Arrival : "No ETA";
             }) 
         }
