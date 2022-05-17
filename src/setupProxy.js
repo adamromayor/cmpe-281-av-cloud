@@ -7,7 +7,7 @@ const dbProxy = {
 }
 
 const carlaProxy = {
-    target: "https://5f8c-98-37-241-218.ngrok.io",
+    target: "https://9901-2601-646-9901-a210-00-10ab.ngrok.io",
     changeOrigin: true,
     secure: false
 }
